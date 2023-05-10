@@ -1,0 +1,10 @@
+{% if shopify %}
+    <script>
+    let urlParams = new URLSearchParams(location.search);
+    if(window.location===window.parent.location){
+      if(urlParams.get("embedded")==="1"||(urlParams.has("hmac")&&urlParams.has("shop")&&urlParams.has("host")&&urlParams.get("timestamp"))){
+        window.location.replace("https://{{shopify.shopify_domain}}/admin/apps/{{shopify.app_key}}/?shop={{shopify.shopify_domain}}")
+      }
+    } 
+    </script>
+{% endif %}

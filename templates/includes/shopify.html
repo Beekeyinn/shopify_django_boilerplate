@@ -1,0 +1,18 @@
+<script src="https://unpkg.com/@shopify/app-bridge"></script>
+<script src="https://unpkg.com/@shopify/app-bridge-utils"></script>
+
+<script>
+    var AppBridge = window['app-bridge'];
+    var AppBridgeUtils = window['app-bridge-utils'];
+    var actions = AppBridge.actions;
+    var createApp = AppBridge.default;
+    var app = createApp({
+      apiKey: '{{ api_key }}',
+      shopOrigin: '{{ shop_origin }}'
+    });
+    var redirect = actions.Redirect.create(app);
+
+    function topLevelRedirectToLogin() {
+      redirect.dispatch(actions.Redirect.Action.REMOTE, `${app.localOrigin}/login?shop={{ shop_origin }}`);
+    }
+</script>

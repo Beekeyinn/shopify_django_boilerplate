@@ -16,8 +16,12 @@ class HomeView(View):
     @known_shop_required
     @latest_access_scopes_required
     def get(self, request, *args, **kwargs):
-        if not isinstance(request.user, User) and isinstance(
-            request.user, AnonymousUser
+        if (
+            not isinstance(request.user, User)
+            and isinstance(request.user, AnonymousUser)
+            and request.GET.get("hmac", None) is not None
+            and request.GET.get("host", None) is not None
+            and request.GET.get("timestamp", None) is not None
         ):
             try:
                 user = authenticate(request, username=kwargs.get("shopify_domain"))
@@ -30,7 +34,7 @@ class HomeView(View):
                 "api_key": getattr(settings, "SHOPIFY_API_KEY"),
                 "scope_changes_required": user.access_scopes,
             }
-            return render(request, "home/index_main.html")
+            return render(request, "index.html")
         context = {
             "shop_origin": kwargs.get("shopify_domain"),
             "api_key": getattr(settings, "SHOPIFY_API_KEY"),
